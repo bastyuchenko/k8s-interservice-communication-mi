@@ -3,3 +3,6 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.vs
+/.idea/.idea.k8s-interservice-communication-mi/.idea
+*.user
