@@ -1,25 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.Extensions.Options;
-using Service2;
-using System.Runtime;
 
-internal class Service2AuthHandler : AuthorizationHandler<AuthGroupReq, HttpContext>
+namespace Service2;
+
+public class Service2AuthHandler : AuthorizationHandler<IAuthorizationRequirement, HttpContext>
 {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthGroupReq requirement, HttpContext resource)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IAuthorizationRequirement requirement,
+        HttpContext resource)
     {
-        if (context.User.HasClaim("groups", "kkkkkkkkkkkk-iii-iii-oooooooo") && IsInterServiceAllowed())
+        if (context.User.HasClaim("groups", "f7245d37-90a4-42cb-97f4-e6ec2c5fe98f"))
         {
             context.Succeed(requirement);
             return Task.CompletedTask;
         }
-
-        bool IsInterServiceAllowed() =>
-            resource?.GetEndpoint()
-                ?.Metadata.GetMetadata<ControllerActionDescriptor>()
-                ?.EndpointMetadata.OfType<AllowInterserviceCommunicationAttribute>()
-                .SingleOrDefault() != null;
 
         context.Fail();
         return Task.CompletedTask;

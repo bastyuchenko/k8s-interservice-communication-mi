@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Service2.Controllers
@@ -15,7 +14,7 @@ namespace Service2.Controllers
         {
             _logger = logger;
         }
-
+        
         [HttpGet]
         public IEnumerable<string> Get()
         {

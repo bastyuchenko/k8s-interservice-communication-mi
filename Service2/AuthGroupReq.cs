@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Service2
+namespace Service2;
+
+public class AuthGroupReq : IAuthorizationRequirement
 {
-    public class AuthGroupReq: IAuthorizationRequirement
-    {
-    }
 }

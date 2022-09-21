@@ -1,25 +1,33 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Service1.Controllers
+namespace Service1.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ValuesController : ControllerBase
 {
-    [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ValuesController : ControllerBase
+    private readonly ILogger<ValuesController> _logger;
+    private IHttpClientFactory _httpClientFactory;
+
+    public ValuesController(ILogger<ValuesController> logger, IHttpClientFactory httpClientFactory)
     {
-        private readonly ILogger<ValuesController> _logger;
+        _logger = logger;
+        _httpClientFactory = httpClientFactory;
+    }
 
-        public ValuesController(ILogger<ValuesController> logger)
+    [HttpGet]
+    public async Task<string?> Get()
+    {
+        var httpClient = _httpClientFactory.CreateClient("GitHub");
+        var response = await httpClient.GetAsync($"api/values", CancellationToken.None);
+
+        if (response.IsSuccessStatusCode)
         {
-            _logger = logger;
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+                    var str = System.Text.Encoding.Default.GetString(bytes);
+                    return str;
         }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new[] { "Service2.value1", "Service2.value2" };
-        }
+        return response.ReasonPhrase;
     }
 }
