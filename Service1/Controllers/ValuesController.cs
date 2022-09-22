@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Service1.Controllers;
 
@@ -6,28 +7,18 @@ namespace Service1.Controllers;
 [ApiController]
 public class ValuesController : ControllerBase
 {
-    private readonly ILogger<ValuesController> _logger;
-    private IHttpClientFactory _httpClientFactory;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly Service2Service _service2;
 
-    public ValuesController(ILogger<ValuesController> logger, IHttpClientFactory httpClientFactory)
+    public ValuesController(IHttpClientFactory httpClientFactory, Service2Service service2)
     {
-        _logger = logger;
         _httpClientFactory = httpClientFactory;
+        _service2 = service2;
     }
 
     [HttpGet]
     public async Task<string?> Get()
     {
-        var httpClient = _httpClientFactory.CreateClient("GitHub");
-        var response = await httpClient.GetAsync($"api/values", CancellationToken.None);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var bytes = await response.Content.ReadAsByteArrayAsync();
-                    var str = System.Text.Encoding.Default.GetString(bytes);
-                    return str;
-        }
-
-        return response.ReasonPhrase;
+        return await _service2.GetValues();
     }
 }

@@ -1,21 +1,19 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
 using Service1;
+using Service1.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .Configure<AzureAd>(builder.Configuration.GetSection("AzureAd"))
-    .Configure<HttpClientSettings>(builder.Configuration.GetSection("HttpClientSettings"))
+    .Configure<AzureAdSettings>(builder.Configuration.GetSection("AzureADSettings"))
     .AddTransient<IAccessTokenProvider, AzureAdAccessTokenProvider>();
 
 builder.Services
-    .AddHttpClient("GitHub", httpClient => { httpClient.BaseAddress = new Uri("https://localhost:7019/"); })
+    .AddHttpClient<Service2Service>()
     .AddHttpMessageHandler(AuthenticationHandler.AuthenticationHandlerFactory);
 
 // Add services to the container.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
 
 builder.Services.AddControllers();
 

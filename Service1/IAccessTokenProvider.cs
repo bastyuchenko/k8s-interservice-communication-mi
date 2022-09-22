@@ -2,5 +2,5 @@
 
 public interface IAccessTokenProvider
 {
-    Task<string> GetAccessToken(string resource);
+    Task<string> GetAccessToken();
 }

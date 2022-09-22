@@ -1,32 +1,32 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.Azure.Services.AppAuthentication;
+﻿using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Extensions.Options;
+using Service1.Configuration;
 
-namespace Service1
+namespace Service1;
+
+public class AzureAdAccessTokenProvider : IAccessTokenProvider
 {
-    public class AzureAdAccessTokenProvider : IAccessTokenProvider
+    private readonly AzureServiceTokenProvider _client;
+    private readonly AzureAdSettings _settings;
+
+    public AzureAdAccessTokenProvider(IOptions<AzureAdSettings> settings)
     {
-        private readonly AzureAd _settings;
-        private readonly AzureServiceTokenProvider _client;
+        _settings = settings.Value;
+        _client = CreateClient();
+    }
 
-        public AzureAdAccessTokenProvider(IOptions<AzureAd> settings) : this(settings.Value)
-        {
-        }
+    public async Task<string> GetAccessToken()
+    {
+        return await _client.GetAccessTokenAsync(_settings.Resource);
+    }
 
-        private AzureAdAccessTokenProvider(AzureAd settings)
-        {
-            _settings = settings;
-            _client = CreateClient();
-        }
+    private AzureServiceTokenProvider CreateClient()
+    {
+        return new(GetConnectionString());
+    }
 
-        public async Task<string> GetAccessToken(string resource) 
-            => await _client.GetAccessTokenAsync(resource);
-
-        private AzureServiceTokenProvider CreateClient() 
-            => new AzureServiceTokenProvider(GetConnectionString());
-
-        private string? GetConnectionString()
-        {
-            return $"RunAs=App; AppId={_settings.ClientId}; AppKey={_settings.ClientSecret}; TenantId={_settings.TenantId}";
-        }
+    private string GetConnectionString()
+    {
+        return $"RunAs=App; AppId={_settings.ClientId}; AppKey={_settings.ClientSecret}; TenantId={_settings.TenantId}";
     }
 }
