@@ -44,3 +44,28 @@ Accounts in any organizational directory (Any Azure AD directory - Multitenant) 
 ```
 
 
+# Deploy infrastructure in Azure
+
+## Authentication providing  
+Register a new application in Azure AD for Service1  
+![image](https://user-images.githubusercontent.com/6165551/192064247-f6e2743f-0f6c-4c3b-92df-2d3f784fbeee.png)
+Add "New client secret" in section "Certificate and secrets"  
+
+
+Register a new application in AzureAD for:  
+* to have value that will be specified in __Resource__ in Service1 ("Exposed API" name will be used) and __Audience__ in Service2 (ClientId)
+![image](https://user-images.githubusercontent.com/6165551/192065553-8f7d56de-bbb7-46f5-80ec-2e139a6965ec.png)
+Expose API  
+Expose an API -> Application ID URI -> Set
+![image](https://user-images.githubusercontent.com/6165551/192066270-53eefd09-03e5-4075-b8b5-63ec879b091e.png)
+
+
+## Authentication providing
+1. We need to add "groups" claim  
+Interservice.Communication.Service1 -> Token configuration -> Add groups claim  
+![image](https://user-images.githubusercontent.com/6165551/192066855-451d43a6-3f19-478a-9f51-04ff123e285a.png)
+
+Create AzureAD group. Add this service Interservice.Communication.Service1 (especially his Service Principle) to new group. This group ID will be chenked on the Service2.
+![image](https://user-images.githubusercontent.com/6165551/192067209-9c4f8108-8336-4727-81d6-0153a5761d43.png)
+
+
