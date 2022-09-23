@@ -10,7 +10,8 @@ builder.Services.AddAuthentication(opt => opt.DefaultScheme = JwtBearerDefaults.
     .AddJwtBearer("Bearer", opt =>
     {
         var authenticationSettings = builder.Configuration.GetSection("Authentication").Get<AuthenticationSettings>();
-        opt.Authority = authenticationSettings.Authority;
+
+        opt.Authority = $"https://login.microsoftonline.com/{authenticationSettings.TenantId}/";
 
         opt.TokenValidationParameters = new TokenValidationParameters
         {
@@ -18,7 +19,7 @@ builder.Services.AddAuthentication(opt => opt.DefaultScheme = JwtBearerDefaults.
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             ValidAudience = authenticationSettings.Audience,
-            ValidIssuer = authenticationSettings.Issuer
+            ValidIssuer = $"https://login.microsoftonline.com/{authenticationSettings.TenantId}/v2.0",
         };
     });
 
