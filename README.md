@@ -1,5 +1,6 @@
 # k8s-interservice-communication-mi
 
+https://learn.microsoft.com/en-us/azure/active-directory/develop/access-tokens#validate-tokens  
 https://learn.microsoft.com/en-us/dotnet/api/overview/azure/service-to-service-authentication  
 
 # Overal description
