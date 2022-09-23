@@ -26,8 +26,8 @@ __Audience__ - it's ClientId of an registered application with exposed API that.
 __TenantId__ - Azure AD tanant Id.  
 
 You can re-check you auth settings in the following way:  
-[ValidAudience](https://github.com/bastyuchenko/k8s-interservice-communication-mi/blob/f1767386c3ae896132902214c0dfb63970c35de8/Service2/Program.cs#L21) should be equal to "aud".
-[ValidIssuer](https://github.com/bastyuchenko/k8s-interservice-communication-mi/blob/f1767386c3ae896132902214c0dfb63970c35de8/Service2/Program.cs#L22)  should be equal to "iss".
+[ValidAudience](https://github.com/bastyuchenko/k8s-interservice-communication-mi/blob/f1767386c3ae896132902214c0dfb63970c35de8/Service2/Program.cs#L21) should be equal to "aud".  
+[ValidIssuer](https://github.com/bastyuchenko/k8s-interservice-communication-mi/blob/f1767386c3ae896132902214c0dfb63970c35de8/Service2/Program.cs#L22)  should be equal to "iss".  
 
 ```
 Depends on the Supported account types "iss" should distinguish:  
